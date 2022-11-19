@@ -1,0 +1,30 @@
+﻿@model StationVM
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Editeaza o statie</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <a asp-action="Index" class="btn btn-dark">Inapoi</a>
+                <input type="submit" value="Salveaza" class="btn btn-warning" />
+            </div>
+        </form>
+    </div>
+</div>
+
+

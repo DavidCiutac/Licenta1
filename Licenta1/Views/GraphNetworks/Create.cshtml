@@ -1,0 +1,49 @@
+﻿@model GraphNetworkCreateVM
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>GraphNetwork</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Station1_Id" class="control-label"></label>
+                <select asp-for="Station1_Id" asp-items="Model?.Station1" class="form-select">
+                    <option>Select Station</option>
+                </select>
+                <span asp-validation-for="Station1_Id" class="text-danger"></span>
+
+
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="Distance" class="control-label"></label>
+                <input asp-for="Distance" class="form-control" />
+                <span asp-validation-for="Distance" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="Station2_Id" class="control-label"></label>
+                <select asp-for="Station2_Id" asp-items="Model?.Station2" class="form-select">
+                    <option>Select Station</option>
+                </select>
+                <span asp-validation-for="Station1_Id" class="text-danger"></span>
+            </div>
+            <br />
+
+            <div class="form-group">
+                <a asp-action="Index" class="btn btn-dark">Back to List</a>
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<div>
+</div>
+
