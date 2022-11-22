@@ -260,11 +260,11 @@ namespace Licenta1.Data.Migrations
 
             modelBuilder.Entity("Licenta1.Data.Node", b =>
                 {
-                    b.Property<int>("NodeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NodeId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Neighbours")
                         .IsRequired()
@@ -273,7 +273,7 @@ namespace Licenta1.Data.Migrations
                     b.Property<int>("StationId")
                         .HasColumnType("int");
 
-                    b.HasKey("NodeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("StationId");
 

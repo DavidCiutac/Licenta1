@@ -30,7 +30,7 @@ namespace Licenta1.Controllers
         // GET: Nodes
         public async Task<IActionResult> Index()
         {
-            var model = await nodeRepository.GetNodesAsync1();
+            var model = mapper.Map<List<NodeVM>>(await nodeRepository.GetNodesAsync1());
             return View(model);
         }
        
@@ -117,9 +117,9 @@ namespace Licenta1.Controllers
         //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("NodeId,StationId,Neighbours")] Node node)
+        //public async Task<IActionResult> Edit(int id, [Bind("Id,StationId,Neighbours")] Node node)
         //{
-        //    if (id != node.NodeId)
+        //    if (id != node.Id)
         //    {
         //        return NotFound();
         //    }
@@ -133,7 +133,7 @@ namespace Licenta1.Controllers
         //        }
         //        catch (DbUpdateConcurrencyException)
         //        {
-        //            if (!NodeExists(node.NodeId))
+        //            if (!NodeExists(node.Id))
         //            {
         //                return NotFound();
         //            }
@@ -153,12 +153,12 @@ namespace Licenta1.Controllers
         {
 
 
-            var node = await nodeRepository.GetNodesAsync2(id);
+            var node = mapper.Map<NodeVM>( await nodeRepository.GetNodesAsync2(id));
             if (node == null)
             {
                 return NotFound();
             }
-     
+            
             return View(node);
         }
 
@@ -168,7 +168,7 @@ namespace Licenta1.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
 
-            var node = await nodeRepository.GetNodesAsync2(id);
+            var node = mapper.Map<NodeVM>(await nodeRepository.GetNodesAsync2(id));
             if (node != null)
             {
                 await nodeRepository.DeleteAsync(id);
@@ -179,7 +179,25 @@ namespace Licenta1.Controllers
 
         //private bool NodeExists(int id)
         //{
-        //  return (_context.Nodes?.Any(e => e.NodeId == id)).GetValueOrDefault();
+        //  return (_context.Nodes?.Any(e => e.Id == id)).GetValueOrDefault();
         //}
+
+        public async Task<IActionResult> Generate()
+        {
+            var nodes = await nodeRepository.GetAllAsync();
+            foreach(var node in nodes)
+            {
+                await nodeRepository.DeleteAsync(node.Id);
+            }
+            var stations = await stationsRepository.GetAllAsync();
+            foreach (var station in stations)
+            {
+                var model = new Node();
+                model.Station = station;
+                nodeRepository.GenerateNeighbours(model);
+                await nodeRepository.AddAsync(model);
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

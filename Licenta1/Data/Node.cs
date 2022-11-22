@@ -5,7 +5,7 @@ namespace Licenta1.Data
 {
     public class Node
     {
-        public int NodeId { get; set; }
+        public int Id { get; set; }
         
         [ForeignKey("StationId")]
         public Station Station { get; set; }

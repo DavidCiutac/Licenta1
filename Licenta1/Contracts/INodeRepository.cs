@@ -6,7 +6,7 @@ namespace Licenta1.Contracts
     public interface INodeRepository : IGenericRepository<Node>
     {
         public void GenerateNeighbours(Node node);
-        Task<List<NodeVM>>  GetNodesAsync1();
-        Task<NodeVM> GetNodesAsync2(int? id);
+        Task<List<Node>>  GetNodesAsync1();
+        Task<Node> GetNodesAsync2(int? id);
     }
 }

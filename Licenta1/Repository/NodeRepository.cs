@@ -41,22 +41,21 @@ namespace Licenta1.Repository
 
       
 
-        public async Task<List<NodeVM>> GetNodesAsync1()
+        public async Task<List<Node>> GetNodesAsync1()
         {
             var nodes = await context.Nodes.Include(q => q.Station).ToListAsync();
-            var model = mapper.Map<List<NodeVM>>(nodes); 
+            var model = mapper.Map<List<Node>>(nodes); 
             return model;
         }
 
-        public async Task<NodeVM> GetNodesAsync2(int? id)
+        public async Task<Node> GetNodesAsync2(int? id)
         {
             var nodes = await context.Nodes.Include(q => q.Station).ToListAsync();
             foreach (var node in nodes)
             {
-                if(node.NodeId==id)
+                if(node.Id==id)
                 {
-                    var model=mapper.Map<NodeVM>(node);
-                    return model;
+                    return node;
                 }
             }
             return null;
