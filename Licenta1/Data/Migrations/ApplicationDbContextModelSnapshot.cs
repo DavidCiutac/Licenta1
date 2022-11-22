@@ -391,6 +391,36 @@ namespace Licenta1.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
+
+            modelBuilder.Entity("Licenta1.Data.GraphNetwork", b =>
+                {
+                    b.HasOne("Licenta1.Data.Station", "Station1")
+                        .WithMany()
+                        .HasForeignKey("Station1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Licenta1.Data.Station", "Station2")
+                        .WithMany()
+                        .HasForeignKey("Station2Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Station1");
+
+                    b.Navigation("Station2");
+                });
+
+            modelBuilder.Entity("Licenta1.Data.Node", b =>
+                {
+                    b.HasOne("Licenta1.Data.Station", "Station")
+                        .WithMany()
+                        .HasForeignKey("StationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Station");
+                });
 #pragma warning restore 612, 618
         }
     }

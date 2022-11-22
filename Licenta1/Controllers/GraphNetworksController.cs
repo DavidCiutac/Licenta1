@@ -174,6 +174,6 @@ namespace Licenta1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-     
+
     }
 }

@@ -77,7 +77,7 @@ namespace Licenta1.Controllers
                     //model.Name2 = model.Station2.Name;
                     //await graphNetworkRepository.AddAsync(model);
                     model.Station=await stationsRepository.GetAsync(model.StationId);
-                    nodeRepository.GenerateNeighbours(model);
+                     nodeRepository.GenerateNeighbours(model);
                     await nodeRepository.AddAsync(model);
                     return RedirectToAction(nameof(Index));
                 }
@@ -158,7 +158,7 @@ namespace Licenta1.Controllers
             {
                 return NotFound();
             }
-            
+     
             return View(node);
         }
 
