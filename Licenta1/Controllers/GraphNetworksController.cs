@@ -1,10 +1,11 @@
-﻿using AutoMapper;
+﻿ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Licenta1.Contracts;
 using Licenta1.Data;
 using Licenta1.Models;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Licenta1.Controllers
 {
@@ -32,7 +33,7 @@ namespace Licenta1.Controllers
         // GET: GraphNetworks/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var graphNetwork=await graphNetworkRepository.GetGraphNetworkByIdAsync1(id);
+            var graphNetwork=await graphNetworkRepository.GetGraphNetworkAsync(id);
           
             if (graphNetwork == null)
             {
@@ -70,8 +71,7 @@ namespace Licenta1.Controllers
                     var model = mapper.Map<GraphNetwork>(graphNetworkVM);
                     model.Station1 = await stationsRepository.GetAsync(model.Station1_Id);
                     model.Station2 = await stationsRepository.GetAsync(model.Station2_Id);
-                    //model.Name1 = model.Station1.Name;
-                    //model.Name2 = model.Station2.Name;
+          
                     await graphNetworkRepository.AddAsync(model);
                     
                     return RedirectToAction(nameof(Index));
@@ -126,8 +126,6 @@ namespace Licenta1.Controllers
                     var model = mapper.Map<GraphNetwork>(graphNetworkVM);
                     model.Station1 = await stationsRepository.GetAsync(model.Station1_Id);
                     model.Station2 = await stationsRepository.GetAsync(model.Station2_Id);
-                    //model.Name1 = model.Station1.Name;
-                    //model.Name2 = model.Station2.Name;
                    
                     await graphNetworkRepository.UpdateAsync(model);
                     
@@ -174,6 +172,50 @@ namespace Licenta1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> AddNeighbours(int id)
+        {
+            var station = await stationsRepository.GetAsync(id);
+            StationVM stationModel = mapper.Map<StationVM>(station);
+            var model = new GraphNetworkAddNeighbourVM
+            {
+                Station1 = stationModel,
+                Station1_Id = stationModel.Id,
+                Station2 = new SelectList(await stationsRepository.GetAllAsync(), "Id", "Name")
+            };
+            return View(model);
+        }
+
+
+
+        public async Task<IActionResult> Create1(GraphNetworkAddNeighbourVM graphNetworkAddNeighbourVM)
+        {
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+                    var model = mapper.Map<GraphNetwork>(graphNetworkAddNeighbourVM);
+                    model.Station1 = await stationsRepository.GetAsync(model.Station1_Id);
+                    model.Station2 = await stationsRepository.GetAsync(model.Station2_Id);
+                    await graphNetworkRepository.AddAsync(model);
+                    
+
+                    return RedirectToAction("AddNeighbours", new { id = model.Station1_Id });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "An Error Has Occurred. Please Try Again Later");
+            }
+
+          
+            graphNetworkAddNeighbourVM.Station2 = new SelectList(await stationsRepository.GetAllAsync(), "Id", "Name", graphNetworkAddNeighbourVM.Station2_Id);
+
+
+            return View("Home",graphNetworkAddNeighbourVM);
+        }
 
     }
 }

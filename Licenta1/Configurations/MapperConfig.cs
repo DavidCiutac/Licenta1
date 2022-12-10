@@ -13,6 +13,7 @@ namespace Licenta1.Configurations
             CreateMap<GraphNetwork, GraphNetworkCreateVM>().ReverseMap();
             CreateMap<GraphNetwork, GraphNetworkDetailsVM>().ReverseMap();
             CreateMap<GraphNetworkVM, GraphNetworkCreateVM>().ReverseMap();
+            CreateMap<GraphNetwork, GraphNetworkAddNeighbourVM>().ReverseMap();
 
             CreateMap<Node, NodeVM>().ReverseMap();
             CreateMap<Node, NodeCreateVM>().ReverseMap();

@@ -1,4 +1,5 @@
 ﻿using Licenta1.Data;
+using Licenta1.Models;
 
 namespace Licenta1.Contracts
 {
@@ -6,7 +7,8 @@ namespace Licenta1.Contracts
     {
         Task<List<GraphNetwork>> GetGraphNetworkAsync1();
 
-        Task<GraphNetwork> GetGraphNetworkByIdAsync1(int id);
+        Task<GraphNetwork> GetGraphNetworkAsync(int id);
+
     }
 }
 

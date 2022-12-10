@@ -38,7 +38,7 @@ namespace Licenta1.Data.Migrations
                 name: "GraphNetworks",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    NodeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Station1_Id = table.Column<int>(type: "int", nullable: false),
                     Station1Id = table.Column<int>(type: "int", nullable: false),
@@ -48,7 +48,7 @@ namespace Licenta1.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GraphNetworks", x => x.Id);
+                    table.PrimaryKey("PK_GraphNetworks", x => x.NodeId);
                     table.ForeignKey(
                         name: "FK_GraphNetworks_Stations_Station1Id",
                         column: x => x.Station1Id,

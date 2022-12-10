@@ -30,7 +30,7 @@ namespace Licenta1.Controllers
         // GET: Nodes
         public async Task<IActionResult> Index()
         {
-            var model = mapper.Map<List<NodeVM>>(await nodeRepository.GetNodesAsync1());
+            var model = mapper.Map<List<NodeVM>>(await nodeRepository.GetNodesAsync());
             return View(model);
         }
        
@@ -38,7 +38,7 @@ namespace Licenta1.Controllers
         // GET: Nodes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            var node = await nodeRepository.GetNodesAsync2(id);
+            var node = await nodeRepository.GetNodeAsync(id);
 
             if (node == null)
             {
@@ -77,7 +77,7 @@ namespace Licenta1.Controllers
                     //model.Name2 = model.Station2.Name;
                     //await graphNetworkRepository.AddAsync(model);
                     model.Station=await stationsRepository.GetAsync(model.StationId);
-                     nodeRepository.GenerateNeighbours(model);
+                    await nodeRepository.GenerateNeighboursAsync(model);
                     await nodeRepository.AddAsync(model);
                     return RedirectToAction(nameof(Index));
                 }
@@ -153,7 +153,7 @@ namespace Licenta1.Controllers
         {
 
 
-            var node = mapper.Map<NodeVM>( await nodeRepository.GetNodesAsync2(id));
+            var node = mapper.Map<NodeVM>( await nodeRepository.GetNodeAsync(id));
             if (node == null)
             {
                 return NotFound();
@@ -168,7 +168,7 @@ namespace Licenta1.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
 
-            var node = mapper.Map<NodeVM>(await nodeRepository.GetNodesAsync2(id));
+            var node = mapper.Map<NodeVM>(await nodeRepository.GetNodeAsync(id));
             if (node != null)
             {
                 await nodeRepository.DeleteAsync(id);
@@ -184,19 +184,7 @@ namespace Licenta1.Controllers
 
         public async Task<IActionResult> Generate()
         {
-            var nodes = await nodeRepository.GetAllAsync();
-            foreach(var node in nodes)
-            {
-                await nodeRepository.DeleteAsync(node.Id);
-            }
-            var stations = await stationsRepository.GetAllAsync();
-            foreach (var station in stations)
-            {
-                var model = new Node();
-                model.Station = station;
-                nodeRepository.GenerateNeighbours(model);
-                await nodeRepository.AddAsync(model);
-            }
+            await nodeRepository.GenerateDatabaseAsync();
             return RedirectToAction(nameof(Index));
         }
     }

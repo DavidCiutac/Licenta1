@@ -66,10 +66,10 @@ namespace Licenta1.Controllers
             if (ModelState.IsValid)
             {
                 var station = mapper.Map<Station>(stationVM);
-
                 var st=await stationsRepository.AddAsync(station);
-               
-                return RedirectToAction(nameof(Index));
+
+                // return RedirectToAction("AddNeighbours", new RouteValueDictionary { new { Controller="GraphNetworkController",Action= "AddNeighbours"},station } );
+                return RedirectToAction( "AddNeighbours", "GraphNetworks",new {id=station.Id}); 
             }
             return View(stationVM);
         }

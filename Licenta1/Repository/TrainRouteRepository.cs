@@ -17,7 +17,12 @@ namespace Licenta1.Repository
             this.context = context;
         }
        
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// a train route that is about to be created
+        /// <returns> the model with an other station</returns>
         public async Task<TrainRouteCreateVM> CreateNeighbourList1(TrainRouteCreateVM model)
         {
             var station = await stationsRepository.GetAsync(model.CurrentStationId);
@@ -39,7 +44,7 @@ namespace Licenta1.Repository
                 }
             }
             if (model.Neighbours == null)
-                return null;
+                model.Rute = "-";
             string[] words = model.Neighbours.Split('-');
 
             IEnumerable<Station> stations = await stationsRepository.GetAllAsync();

@@ -8,6 +8,7 @@ namespace Licenta1.Contracts
         ApplicationDbContext getContext();
         Task<T> GetAsync(int? id);
         Task<List<T>> GetAllAsync();
+        Task<List<T>> MultipleAddAsync(List<T> entities);
         Task<T> AddAsync(T entity);
         Task<bool> Exists(int id);
         Task DeleteAsync(int id);

@@ -9,10 +9,17 @@ namespace Licenta1.Repository
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         public readonly ApplicationDbContext context;
+        public readonly IStationsRepository stationsRepository;
         public ApplicationDbContext getContext()
             {
             return context;
             }
+
+        public GenericRepository(ApplicationDbContext context, IStationsRepository stationsRepository)
+        {
+            this.context = context;
+            this.stationsRepository = stationsRepository;
+        }
 
         public GenericRepository(ApplicationDbContext context)
         {
@@ -25,11 +32,20 @@ namespace Licenta1.Repository
             await context.SaveChangesAsync();
             return entity;
         }
+        public async Task<List<T>> MultipleAddAsync(List<T> entities)
+        {
+            foreach(var entity in entities)
+            {
+                await context.AddAsync(entity);
+            }
+            await context.SaveChangesAsync();
+            return entities;
+        }
 
         public async Task DeleteAsync(int id)
         {
             var entity = await GetAsync(id);
-            context.Set<T>().Remove(entity);
+             context.Set<T>().Remove(entity);
             await context.SaveChangesAsync();
         }
 
@@ -58,6 +74,8 @@ namespace Licenta1.Repository
             context.Update(entity);
             await context.SaveChangesAsync();
         }
+
+        
 
        
     }
